@@ -2,27 +2,25 @@
 
 namespace battle_game {
 
-template <class UnitType, class... Args>
-void GameCore::AddPrimaryUnitAllocationFunction(Args... args) {
-  primary_unit_allocation_functions_.emplace_back([=](uint32_t player_id) {
-    return AddUnit<UnitType>(player_id, args...);
-  });
+template <class UnitType, class... Args> void GameCore::AddPrimaryUnitAllocationFunction(Args... args) {
+    primary_unit_allocation_functions_.emplace_back(
+        [=](uint32_t player_id) { return AddUnit<UnitType>(player_id, args...); });
 }
 
 void GameCore::GeneratePrimaryUnitList() {
-  std::unique_ptr<Unit> unit;
+    std::unique_ptr<Unit> unit;
 
-#define ADD_SELECTABLE_UNIT(UnitType)                                        \
-  unit = std::make_unique<UnitType>(nullptr, 0, 0);                          \
-  AddPrimaryUnitAllocationFunction<UnitType>();                              \
-  selectable_unit_list_.push_back(unit->UnitName() + std::string(" - By ") + \
-                                  unit->Author());
+#define ADD_SELECTABLE_UNIT(UnitType)                                                                                  \
+    unit = std::make_unique<UnitType>(nullptr, 0, 0);                                                                  \
+    AddPrimaryUnitAllocationFunction<UnitType>();                                                                      \
+    selectable_unit_list_.push_back(unit->UnitName() + std::string(" - By ") + unit->Author());
 
-  /*
-   * TODO: Add Your Unit Here!
-   * */
-  ADD_SELECTABLE_UNIT(unit::Tank);
+    /*
+     * TODO: Add Your Unit Here!
+     * */
+    ADD_SELECTABLE_UNIT(unit::Tank);
+    ADD_SELECTABLE_UNIT(unit::Warthoggggg);
 
-  unit.reset();
+    unit.reset();
 }
-}  // namespace battle_game
+} // namespace battle_game
