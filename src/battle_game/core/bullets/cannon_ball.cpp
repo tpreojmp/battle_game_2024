@@ -11,9 +11,10 @@ CannonBall::CannonBall(GameCore *core,
                        glm::vec2 position,
                        float rotation,
                        float damage_scale,
-                       glm::vec2 velocity)
+                       glm::vec2 velocity,
+                       uint32_t cannonball_health)
     : Bullet(core, id, unit_id, player_id, position, rotation, damage_scale),
-      velocity_(velocity) {
+      velocity_(velocity), cannonball_health_(cannonball_health) {
 }
 
 void CannonBall::Render() {
@@ -24,7 +25,33 @@ void CannonBall::Render() {
 }
 
 void CannonBall::Update() {
-  position_ += velocity_ * kSecondPerTick;
+  auto p = position_ + velocity_ * kSecondPerTick;
+  if (game_core_->IsOutOfRange(p)) {
+    if(cannonball_health_ == 0) {
+      game_core_->PushEventRemoveBullet(id_);
+      return;
+    } else {
+      cannonball_health_--;
+      if (p.x < game_core_ -> GetBoundaryLow().x) {
+        p.x = game_core_ -> GetBoundaryLow().x;
+        velocity_.x = -velocity_.x;
+      }
+      if (p.x > game_core_ -> GetBoundaryHigh().x) {
+        p.x = game_core_ -> GetBoundaryHigh().x;
+        velocity_.x = -velocity_.x;
+      }
+      if (p.y < game_core_ -> GetBoundaryLow().y) {
+        p.y = game_core_ -> GetBoundaryLow().y;
+        velocity_.y = -velocity_.y;
+      }
+      if (p.y > game_core_ -> GetBoundaryHigh().y) {
+        p.y = game_core_ -> GetBoundaryHigh().y;
+        velocity_.y = -velocity_.y;
+      }
+    }
+  }
+
+  position_ = p;
   bool should_die = false;
   if (game_core_->IsBlockedByObstacles(position_)) {
     should_die = true;

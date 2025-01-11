@@ -11,12 +11,14 @@ class CannonBall : public Bullet {
              glm::vec2 position,
              float rotation,
              float damage_scale,
-             glm::vec2 velocity);
+             glm::vec2 velocity,
+             uint32_t cannonball_health=0);
   ~CannonBall() override;
   void Render() override;
   void Update() override;
 
  private:
   glm::vec2 velocity_{};
+  uint32_t cannonball_health_{1};
 };
 }  // namespace battle_game::bullet

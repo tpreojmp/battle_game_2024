@@ -94,7 +94,7 @@ void Warthoggggg::_fire() {
             if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
                 auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, rotation_);
                 GenerateBullet<bullet::CannonBall>(position_ + Rotate({0.0f, 1.1f}, rotation_), rotation_,
-                                                   GetDamageScale(), velocity);
+                                                   GetDamageScale(), velocity, 2);
                 fire_count_down_ = kTickPerSecond / 60; // Fire interval 1 second.
             }
         }

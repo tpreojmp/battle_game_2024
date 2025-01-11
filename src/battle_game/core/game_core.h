@@ -181,6 +181,13 @@ class GameCore {
   glm::vec2 RandomOnCircle();
   glm::vec2 RandomInCircle();
 
+  glm::vec2 GetBoundaryLow() const {
+    return boundary_low_;
+  };
+  glm::vec2 GetBoundaryHigh() const {
+    return boundary_high_;
+  };
+
  private:
   std::queue<std::function<void()>> event_queue_;
 
